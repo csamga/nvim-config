@@ -1,12 +1,14 @@
 local M = {}
 
 function M.config()
-  local autopairs = require('nvim-autopairs')
-  autopairs.setup {}
+  require('nvim-autopairs').setup {
+		check_ts = true,
+	}
 
+	local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 	local cmp = require('cmp')
-	local autopairs_cmp = require('nvim-autopairs.completion.cmp')
-	cmp.event:on('confirm_done', autopairs_cmp.on_confirm_done())
+
+	cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
 end
 
 return M
