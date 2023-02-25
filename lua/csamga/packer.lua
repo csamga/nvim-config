@@ -18,28 +18,38 @@ require('packer').startup {
 	function(use)
 		use 'wbthomason/packer.nvim' -- Packer can manage itself
 
-		use {	-- LSP
-			'neovim/nvim-lspconfig',
-			requires = {
-				'williamboman/mason.nvim',
-				'williamboman/mason-lspconfig.nvim',
-				'j-hui/fidget.nvim',
-				'folke/neodev.nvim',
-				'jose-elias-alvarez/nvim-lsp-ts-utils',
-			},
-			config = require('csamga.lsp').config,
-		}
+  	use {	-- LSP
+  		'neovim/nvim-lspconfig',
+  		requires = {
+  			'williamboman/mason.nvim',
+  			'williamboman/mason-lspconfig.nvim',
+  			{
+  				'folke/neodev.nvim',
+  				config = function()
+  					require('neodev').setup {}
+  				end,
+  			},
+  			{
+  				'j-hui/fidget.nvim',
+  				config = function()
+  					require('fidget').setup {}
+  				end,
+  			},
+  			'jose-elias-alvarez/nvim-lsp-ts-utils',
+  		},
+  		config = require('csamga.lsp').config,
+  	}
 
-		use { -- Auto completion
-			'hrsh7th/nvim-cmp',
-			requires = {
-				'hrsh7th/cmp-nvim-lsp',
-				'L3MON4D3/LuaSnip',
-				'saadparwaiz1/cmp_luasnip',
-				'onsails/lspkind.nvim',
-			},
-			config = require('csamga.cmp').config,
-		}
+  	use { -- Auto completion
+  		'hrsh7th/nvim-cmp',
+  		requires = {
+  			'hrsh7th/cmp-nvim-lsp',
+  			'L3MON4D3/LuaSnip',
+  			'saadparwaiz1/cmp_luasnip',
+  			'onsails/lspkind.nvim',
+  		},
+  		config = require('csamga.nvim-cmp').config,
+  	}
 
   	use { -- DAP
   		'mfussenegger/nvim-dap',
@@ -48,7 +58,7 @@ require('packer').startup {
   			'williamboman/mason.nvim',
   			'jay-babu/mason-nvim-dap.nvim',
   		},
-			config = require('csamga.dap').config,
+  		config = require('csamga.dap').config,
   	}
 
   	use { -- Fuzzy finder
@@ -72,48 +82,48 @@ require('packer').startup {
   		opt = false,
   	}
 
-		use { -- Auto close pairs of brackets, parentheses, ...
-			'windwp/nvim-autopairs',
-			opt = false,
-			after = {
-				'nvim-treesitter',
-				'nvim-cmp',
-			},
-			config = require('csamga.autopairs').config,
-		}
-
-		use { -- Auto close HTML tags
-			'windwp/nvim-ts-autotag',
-			opt = false,
-			after = 'nvim-treesitter',
-			config = require('csamga.autotag').config,
-		}
-
-		use { -- Git
-			'tpope/vim-fugitive',
-			'tpope/vim-rhubarb',
-			'lewis6991/gitsigns.nvim',
-		}
-
-  	use { -- VSCode theme
-			'Mofiqul/vscode.nvim',
-			config = require('csamga.vscode').config,
-		}
-
-  	use { -- Status line
-  		'nvim-lualine/lualine.nvim',
-  		requires = {
-  			'kyazdani42/nvim-web-devicons',
-  			opt = false,
+  	use { -- Auto close pairs of brackets, parentheses, ...
+  		'windwp/nvim-autopairs',
+  		opt = false,
+  		after = {
+  			'nvim-treesitter',
+  			'nvim-cmp',
   		},
-  		after = 'vscode.nvim',
-  		config = require('csamga.lualine').config,
+  		config = require('csamga.autopairs').config,
   	}
 
-		use { -- Indentation guides
-			'lukas-reineke/indent-blankline.nvim',
-			config = require('csamga.indent-blankline').config,
-		}
+  	use { -- Auto close HTML tags
+  		'windwp/nvim-ts-autotag',
+  		opt = false,
+  		after = 'nvim-treesitter',
+  		config = require('csamga.autotag').config,
+  	}
+
+  	use { -- Git
+  		'tpope/vim-fugitive',
+  		'tpope/vim-rhubarb',
+  		'lewis6991/gitsigns.nvim',
+  	}
+
+  	use { -- VSCode theme
+  		'Mofiqul/vscode.nvim',
+  		config = require('csamga.vscode').config,
+  	}
+
+    use { -- Status line
+    	'nvim-lualine/lualine.nvim',
+    	requires = {
+    		'kyazdani42/nvim-web-devicons',
+    		opt = true,
+    	},
+    	after = 'vscode.nvim',
+    	config = require('csamga.lualine').config,
+    }
+
+  	use { -- Indentation guides
+  		'lukas-reineke/indent-blankline.nvim',
+  		config = require('csamga.indent-blankline').config,
+  	}
 
 		if packer_bootstrap then
 			require('packer').sync()
