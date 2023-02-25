@@ -19,26 +19,27 @@ require('packer').startup {
 		use 'wbthomason/packer.nvim' -- Packer can manage itself
 
 		use {	-- LSP
-		'neovim/nvim-lspconfig',
-		requires = {
-			'williamboman/mason.nvim',
-			'williamboman/mason-lspconfig.nvim',
-			'j-hui/fidget.nvim',
-			'folke/neodev.nvim',
-			'jose-elias-alvarez/nvim-lsp-ts-utils',
-		},
-		config = require('csamga.lsp').config,
-	}
+			'neovim/nvim-lspconfig',
+			requires = {
+				'williamboman/mason.nvim',
+				'williamboman/mason-lspconfig.nvim',
+				'j-hui/fidget.nvim',
+				'folke/neodev.nvim',
+				'jose-elias-alvarez/nvim-lsp-ts-utils',
+			},
+			config = require('csamga.lsp').config,
+		}
 
-	use { -- Auto completion
-		'hrsh7th/nvim-cmp',
-		requires = {
-			'hrsh7th/cmp-nvim-lsp',
-			'L3MON4D3/LuaSnip',
-			'saadparwaiz1/cmp_luasnip',
-		},
-		config = require('csamga.cmp').config,
-	}
+		use { -- Auto completion
+			'hrsh7th/nvim-cmp',
+			requires = {
+				'hrsh7th/cmp-nvim-lsp',
+				'L3MON4D3/LuaSnip',
+				'saadparwaiz1/cmp_luasnip',
+				'onsails/lspkind.nvim',
+			},
+			config = require('csamga.cmp').config,
+		}
 
   	use { -- DAP
   		'mfussenegger/nvim-dap',
@@ -141,11 +142,11 @@ require('packer').startup {
 }
 
 if packer_bootstrap then
-	print '=================================='
-	print '    Plugins are being installed'
-	print '    Wait until Packer completes,'
-	print '       then restart nvim'
-	print '=================================='
+	print '╭─────────────────────────────────╮'
+	print '│   Plugins are being installed   │'
+	print '│   Wait until Packer completes   │'
+	print '│        then restart nvim        │'
+	print '╰─────────────────────────────────╯'
 	return
 end
 
