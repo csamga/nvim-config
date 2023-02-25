@@ -104,7 +104,7 @@ require('packer').startup {
   		'nvim-lualine/lualine.nvim',
   		requires = {
   			'kyazdani42/nvim-web-devicons',
-  			opt = true,
+  			opt = false,
   		},
   		after = 'vscode.nvim',
   		config = require('csamga.lualine').config,
