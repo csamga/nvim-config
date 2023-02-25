@@ -17,6 +17,14 @@ local packer_bootstrap = ensure_packer()
 require('packer').startup {
 	function(use)
 		use 'wbthomason/packer.nvim' -- Packer can manage itself
+	
+		use {
+				'goolord/alpha-nvim',
+				requires = { 'nvim-tree/nvim-web-devicons' },
+				config = function ()
+						require'alpha'.setup(require'alpha.themes.dashboard'.config)
+				end
+		}
 
   	use {	-- LSP
   		'neovim/nvim-lspconfig',
