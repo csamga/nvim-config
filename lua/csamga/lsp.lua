@@ -31,7 +31,7 @@ function M.config()
 
 		nmap('<leader>dn', vim.diagnostic.goto_next, 'Jump to next diagnostic')
 		nmap('<leader>dp', vim.diagnostic.goto_next, 'Jump to prev diagnostic')
-		nmap('<leader>gd', vim.lsp.buf.definition, 'Jump to prev diagnostic')
+		nmap('<leader>gd', vim.lsp.buf.definition, 'Jump to definition in split mode')
 	end
 
 	-- Mason
@@ -104,7 +104,7 @@ function M.config()
   		update_in_insert = false,
   		underline = false,
   	}
-  )
+	)
 
   local function goto_definition(split_cmd)
   	local util = vim.lsp.util
@@ -134,11 +134,10 @@ function M.config()
   			util.jump_to_location(result, 'utf-8')
   		end
   	end
-
   	return handler
   end
 
-  vim.lsp.handlers["textDocument/definition"] = goto_definition('split')
+	vim.lsp.handlers['textDocument/definition'] = goto_definition('split')
 end
 
 return M

@@ -40,6 +40,11 @@ function M.config()
   		end,
   	},
 
+		performance = {
+			debounce = 40,
+			throttle = 20,
+		},
+
 		window = {
 			completion = cmp.config.window.bordered(),
 			documentation = cmp.config.window.bordered(),
@@ -92,8 +97,10 @@ function M.config()
 
   	sources = cmp.config.sources({
   		{ name = 'nvim_lsp' },
+			{ name = 'nvim_lua' },
   		{ name = 'luasnip' },
-		}, {
+			{ name = 'nvim_lsp_signature_help' },
+			{ name = 'nvim_lsp_document_symbol' },
 			{ name = 'buffer' },
   	}),
   }

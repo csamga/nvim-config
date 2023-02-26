@@ -17,7 +17,7 @@ local packer_bootstrap = ensure_packer()
 require('packer').startup {
 	function(use)
 		use 'wbthomason/packer.nvim' -- Packer can manage itself
-	
+
 		use {
 				'goolord/alpha-nvim',
 				requires = { 'nvim-tree/nvim-web-devicons' },
@@ -52,8 +52,12 @@ require('packer').startup {
   		'hrsh7th/nvim-cmp',
   		requires = {
   			'hrsh7th/cmp-nvim-lsp',
-  			'L3MON4D3/LuaSnip',
+				'hrsh7th/cmp-buffer',
+				'hrsh7th/cmp-nvim-lsp-signature-help',
+				'hrsh7th/cmp-nvim-lsp-document-symbol',
+				'hrsh7th/cmp-nvim-lua',
   			'saadparwaiz1/cmp_luasnip',
+  			'L3MON4D3/LuaSnip',
   			'onsails/lspkind.nvim',
   		},
   		config = require('csamga.nvim-cmp').config,
