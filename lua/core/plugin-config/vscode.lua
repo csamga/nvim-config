@@ -36,22 +36,22 @@ function M.config()
 			Comment = { fg = c.vscGray, bg = 'NONE', italic = true },
 		},
 	}
-		
+
 	-- Workaround to change Treesitter comment highlight
 	if background == 'dark' then
 		vim.api.nvim_set_hl(0, '@comment', { fg = '#575757', bg = 'NONE', italic = true })
 	else
 		vim.api.nvim_set_hl(0, '@comment', { fg = '#a8a8a8', bg = 'NONE', italic = true })
 	end
-end
 
------- Custom sign column ------
-local signs = { Error = '', Warn = '', Hint = '', Info = '' }
-for type, icon in pairs(signs) do
-	local hl = 'DiagnosticSign' .. type
-	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-end
+	-- Custom sign column
+	local signs = { Error = '', Warn = '', Hint = '', Info = '' }
+	for type, icon in pairs(signs) do
+		local hl = 'DiagnosticSign' .. type
+		vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+	end
 
-vim.fn.sign_define('DapBreakpoint', {text = '🛑', texthl = '', linehl = '', numhl = '' })
+	vim.fn.sign_define('DapBreakpoint', { text = '🛑', texthl = '', linehl = '', numhl = '' })
+end
 
 return M

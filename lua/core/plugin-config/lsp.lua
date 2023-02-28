@@ -31,7 +31,8 @@ function M.config()
 
 		nmap('<leader>dn', vim.diagnostic.goto_next, 'Jump to next diagnostic')
 		nmap('<leader>dp', vim.diagnostic.goto_next, 'Jump to prev diagnostic')
-		nmap('<leader>gd', vim.lsp.buf.definition, 'Jump to definition in split mode')
+		nmap('<leader>gd', vim.lsp.buf.definition, 'Jump to definition in split modn')
+		nmap('<leader>rn', vim.lsp.buf.rename, 'Rename symbol')
 	end
 
 	-- Mason
@@ -53,7 +54,9 @@ function M.config()
 	-- Server list
 	local servers = {
 		clangd = {
-			clangd_complete_macros = true,
+			cmd = { 'clangd', '--header-insertion=never' },
+			args = { '--header-insertion=never' },
+			--clangd_complete_macros = true,
 		},
 		solidity = {},
 		tsserver = {},
@@ -137,7 +140,7 @@ function M.config()
   	return handler
   end
 
-	vim.lsp.handlers['textDocument/definition'] = goto_definition('split')
+	--vim.lsp.handlers['textDocument/definition'] = goto_definition('split')
 end
 
 return M

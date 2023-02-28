@@ -1,7 +1,7 @@
 local M = {}
 
 function M.config()
-	local cmp_kinds = {
+	local kind_icons = {
 		Text          = '',
 		Method        = '',
 		Function      = '',
@@ -31,6 +31,7 @@ function M.config()
 
   local luasnip = require('luasnip')
   luasnip.config.setup {}
+	require('luasnip.loaders.from_vscode').lazy_load {}
 
   local cmp = require('cmp')
   cmp.setup {
@@ -41,8 +42,13 @@ function M.config()
   	},
 
 		performance = {
-			debounce = 40,
-			throttle = 20,
+			debounce = 50,
+			throttle = 200,
+			--fetching_timeout = 80,
+		},
+
+		completion = {
+			keyword_length = 1,
 		},
 
 		window = {
@@ -55,24 +61,36 @@ function M.config()
 		},
 
 		formatting = {
-			fields = { 'kind', 'abbr' },
-			format = function(_, vim_item)
-				vim_item.kind = cmp_kinds[vim_item.kind] or ''
-				vim_item.abbr = string.sub(vim_item.abbr, 1, 40)
+			fields = { 'abbr', 'kind', 'menu' },
+			format = function(entry, vim_item)
+				vim_item.abbr = string.sub(vim_item.abbr, 0, 32)
+				vim_item.kind = kind_icons[vim_item.kind] or ''
+				vim_item.menu = ({
+					nvim_lsp = '[LSP]',
+					luasnip = '[LuaSnip]',
+					nvim_lua = '[Lua]',
+				})[entry.source.name]
 				return vim_item
 			end,
 		},
 
+		sources = cmp.config.sources({
+			{	name = 'nvim_lsp' },
+			{ name = 'luasnip'  },
+		}, {
+			{ name = 'buffer'		},
+			{	name = 'nvim_lua' },
+  	}),
+		--{ name = 'nvim_lsp_signature_help' },
+		--{ name = 'nvim_lsp_document_symbol' },
+
   	mapping = cmp.mapping.preset.insert {
   		['<C-g>'] = cmp.mapping.scroll_docs(-1),
   		['<C-f>'] = cmp.mapping.scroll_docs(1),
-  		['<C-Space>'] = cmp.mapping.complete({}),
+  		['<C-Space>'] = cmp.mapping.complete {},
   		['<C-e>'] = cmp.mapping.abort(),
 
-  		['<CR>'] = cmp.mapping.confirm {
-  			--behavior = cmp.ConfirmBehavior.Replace,
-  			select = false,
-  		},
+  		['<CR>'] = cmp.mapping.confirm { select = false },
 
   		['<Tab>'] = cmp.mapping(function(fallback)
   			if cmp.visible() then
@@ -94,15 +112,6 @@ function M.config()
   			end
   		end, { 'i', 's' })
   	},
-
-  	sources = cmp.config.sources({
-  		{ name = 'nvim_lsp' },
-			{ name = 'nvim_lua' },
-  		{ name = 'luasnip' },
-			{ name = 'nvim_lsp_signature_help' },
-			{ name = 'nvim_lsp_document_symbol' },
-			{ name = 'buffer' },
-  	}),
   }
 end
 

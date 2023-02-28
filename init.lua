@@ -1,3 +1,4 @@
-require('csamga.packer')
-require('csamga.globals')
-require('csamga.keybindings')
+require('core.plugins')
+require('core.globals')
+require('core.keybindings')
+

@@ -18,12 +18,12 @@ require('packer').startup {
 	function(use)
 		use 'wbthomason/packer.nvim' -- Packer can manage itself
 
-		use {
-				'goolord/alpha-nvim',
-				requires = { 'nvim-tree/nvim-web-devicons' },
-				config = function ()
-						require'alpha'.setup(require'alpha.themes.dashboard'.config)
-				end
+		use { -- Startup screen
+			'goolord/alpha-nvim',
+			requires = 'nvim-tree/nvim-web-devicons',
+			config = function ()
+				require('alpha').setup(require('alpha.themes.dashboard').config)
+			end
 		}
 
   	use {	-- LSP
@@ -45,38 +45,53 @@ require('packer').startup {
   			},
   			'jose-elias-alvarez/nvim-lsp-ts-utils',
   		},
-  		config = require('csamga.lsp').config,
+  		config = require('core.plugin-config.lsp').config,
   	}
 
   	use { -- Auto completion
   		'hrsh7th/nvim-cmp',
   		requires = {
+  			'L3MON4D3/LuaSnip',
+				'rafamadriz/friendly-snippets',
+  			'onsails/lspkind.nvim',
   			'hrsh7th/cmp-nvim-lsp',
+				'hrsh7th/cmp-nvim-lua',
 				'hrsh7th/cmp-buffer',
+  			'saadparwaiz1/cmp_luasnip',
 				'hrsh7th/cmp-nvim-lsp-signature-help',
 				'hrsh7th/cmp-nvim-lsp-document-symbol',
-				'hrsh7th/cmp-nvim-lua',
-  			'saadparwaiz1/cmp_luasnip',
-  			'L3MON4D3/LuaSnip',
-  			'onsails/lspkind.nvim',
   		},
-  		config = require('csamga.nvim-cmp').config,
+  		config = require('core.plugin-config.nvim-cmp').config,
   	}
 
   	use { -- DAP
   		'mfussenegger/nvim-dap',
   		requires = {
-  			'rcarriga/nvim-dap-ui',
   			'williamboman/mason.nvim',
   			'jay-babu/mason-nvim-dap.nvim',
+				'rcarriga/nvim-dap-ui',
+				'theHamsta/nvim-dap-virtual-text',
+				'nvim-telescope/telescope-dap.nvim',
   		},
-  		config = require('csamga.dap').config,
+  		config = require('core.plugin-config.dap').config,
   	}
+
+		use { -- File explorer
+			'nvim-tree/nvim-tree.lua',
+			requires = 'nvim-tree/nvim-web-devicons',
+			config = require('core.plugin-config.nvim-tree').config,
+		}
 
   	use { -- Fuzzy finder
   		'nvim-telescope/telescope.nvim', tag = '0.1.1',
-  		requires = 'nvim-lua/plenary.nvim',
-  		config = require('csamga.telescope').config,
+  		requires = {
+				'nvim-lua/plenary.nvim',
+				{
+					'nvim-telescope/telescope-fzf-native.nvim',
+					run = 'make',
+				},
+			},
+  		config = require('core.plugin-config.telescope').config,
   	}
 
   	use { -- Code highlighting and navigation
@@ -84,7 +99,7 @@ require('packer').startup {
   		run = function()
   			pcall(require('nvim-treesitter.install').update { with_sync = true })
   		end,
-  		config = require('csamga.treesitter').config,
+  		config = require('core.plugin-config.treesitter').config,
   	}
 
   	use {
@@ -101,15 +116,22 @@ require('packer').startup {
   			'nvim-treesitter',
   			'nvim-cmp',
   		},
-  		config = require('csamga.autopairs').config,
+  		config = require('core.plugin-config.autopairs').config,
   	}
 
   	use { -- Auto close HTML tags
   		'windwp/nvim-ts-autotag',
   		opt = false,
   		after = 'nvim-treesitter',
-  		config = require('csamga.autotag').config,
+  		config = require('core.plugin-config.autotag').config,
   	}
+
+		use {
+			'numToStr/Comment.nvim',
+			config = function ()
+				require('Comment').setup {}
+			end,
+		}
 
   	use { -- Git
   		'tpope/vim-fugitive',
@@ -119,7 +141,7 @@ require('packer').startup {
 
   	use { -- VSCode theme
   		'Mofiqul/vscode.nvim',
-  		config = require('csamga.vscode').config,
+  		config = require('core.plugin-config.vscode').config,
   	}
 
     use { -- Status line
@@ -129,18 +151,19 @@ require('packer').startup {
     		opt = true,
     	},
     	after = 'vscode.nvim',
-    	config = require('csamga.lualine').config,
+    	config = require('core.plugin-config.lualine').config,
     }
 
   	use { -- Indentation guides
   		'lukas-reineke/indent-blankline.nvim',
-  		config = require('csamga.indent-blankline').config,
+  		config = require('core.plugin-config.indent-blankline').config,
   	}
 
 		if packer_bootstrap then
 			require('packer').sync()
 		end
 	end,
+
 	config = {
 		display = {
 			open_fn = function()
