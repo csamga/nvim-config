@@ -24,8 +24,8 @@ vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", {
 })
 
 -- Move selected lines up/down following indentation
-vim.keymap.set('v', '<A-j>', ":m '>+1<CR>gv=gv")
-vim.keymap.set('v', '<A-k>', ":m '<-2<CR>gv=gv")
+vim.keymap.set({ 'n', 'v' }, '<A-j>', ":m '>+1<CR>gv=gv")
+vim.keymap.set({ 'n', 'v' }, '<A-k>', ":m '<-2<CR>gv=gv")
 
 -- Half page jumping keeping cursor verticaly centered
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
@@ -57,12 +57,12 @@ vim.keymap.set('n', '<leader>t', function()
 
 	if background == 'dark' then
 		vscode.change_style('light')
-		vim.api.nvim_set_hl(0, '@comment', { fg = '#a8a8a8', bg = 'NONE', italic = true })
-		vim.api.nvim_set_hl(0, 'MatchParen', { fg = '#ff00ff', bg = '#f0f0f0' })
+		-- vim.api.nvim_set_hl(0, '@comment', { fg = '#a8a8a8', bg = 'NONE', italic = true })
+		-- vim.api.nvim_set_hl(0, 'MatchParen', { fg = '#ff00ff', bg = '#f0f0f0' })
 	else
 		vscode.change_style('dark')
-		vim.api.nvim_set_hl(0, '@comment', { fg = '#575757', bg = 'NONE', italic = true })
-		vim.api.nvim_set_hl(0, 'MatchParen', { fg = '#00ff00', bg = '#0f0f0f' })
+		-- vim.api.nvim_set_hl(0, '@comment', { fg = '#575757', bg = 'NONE', italic = true })
+		-- vim.api.nvim_set_hl(0, 'MatchParen', { fg = '#00ff00', bg = '#0f0f0f' })
 	end
 end)
 
