@@ -11,7 +11,7 @@ function M.config()
 
   local dap = require('dap')
 
-	if vim.uv.os_uname().sysname == 'Windows_NT' then
+	if vim.loop.os_uname().sysname == 'Windows_NT' then
 		dap.adapters.cppdbg = {
 			id = 'cppdbg',
 			type = 'executable',
@@ -101,14 +101,59 @@ function M.config()
 		widgets.centered_float(widgets.scopes)
 	end)
 
-	require('dapui').setup {}
-
 	require('neodev').setup {
 		library = {
 			plugins = {
 				'nvim-dap-ui',
 			},
 			types = true,
+		},
+	}
+
+	--[[ controls = { {
+		element = 'scopes',
+		enabled = true,
+	}, {
+		element = 'stacks',
+		enabled = true,
+	}, {
+		element = 'breakpoints',
+		enabled = false,
+	}, {
+		element = 'watches',
+		enabled = false,
+	}, {
+		element = 'repl',
+		enabled = true,
+	}, {
+		element = 'console',
+		enabled = true,
+	}
+}, ]]
+	require('dapui').setup {
+		layouts = { {
+				elements = { {
+						id = 'scopes',
+						size = 0.5,
+					}, {
+						id = 'stacks',
+						size = 0.5,
+					}
+				},
+				size = 30,
+				position = 'left',
+			}, {
+				elements = { {
+						id = 'repl',
+						size = 0.5,
+					}, {
+						id = 'console',
+						size = 0.5,
+					},
+				},
+				position = 'bottom',
+				size = 10,
+			},
 		},
 	}
 
