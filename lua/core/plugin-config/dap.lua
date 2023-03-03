@@ -11,7 +11,7 @@ function M.config()
 
   local dap = require('dap')
 
-	if vim.loop.os_uname().sysname == 'Windows_NT' then
+	if vim.uv.os_uname().sysname == 'Windows_NT' then
 		dap.adapters.cppdbg = {
 			id = 'cppdbg',
 			type = 'executable',
