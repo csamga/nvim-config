@@ -7,7 +7,7 @@ function M.config()
 	  	theme = 'vscode',
 	  	component_separators = '|',
 	  	section_separators = { left = '', right = '' },
-	  },
+		},
 	}
 end
 
