@@ -2,7 +2,7 @@ vim.g.mapleader = ' '
 
 vim.o.updatetime = 50
 
-vim.o.mouse = 'n'
+vim.o.mouse = 'nv'
 vim.o.scroll = 6
 vim.o.scrolloff = 8
 
