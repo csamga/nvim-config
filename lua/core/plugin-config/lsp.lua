@@ -1,6 +1,62 @@
 local M = {}
 
 function M.config()
+	-- Server list
+	local servers = {
+		clangd = {
+			cmd = {
+				'clangd',
+				'--header-insertion=never',
+				-- '--query-driver="/usr/bin/gcc"'
+				'--target=x86_64-pc-linux-gnu',
+			},
+		},
+		solidity = {},
+		tsserver = {},
+		html = {},
+		cssls = {},
+		jsonls = {},
+		cmake = {},
+		lua_ls = {
+			Lua = {
+				diagnostics = {
+					globals = { 'vim' },
+				},
+				telemetry = {
+					enable = false,
+				},
+				workspace = {
+					library = vim.api.nvim_get_runtime_file('', true),
+					checkThirdParty = false,
+				},
+			},
+		},
+	}
+
+	local mason = require('mason')
+	local mason_lspconfig = require('mason-lspconfig')
+
+	-- Mason
+	mason.setup {
+		ui = {
+			border = 'rounded',
+			width = 0.75,
+			height = 0.65,
+			icons = {
+				package_pending = '➜',
+			},
+		},
+	}
+
+	-- LSP configuration
+	mason_lspconfig.setup {
+		ensure_installed = vim.tbl_keys(servers),
+		ui = {
+			border = 'rounded',
+		},
+	}
+
+	-- This runs when a LS attaches to the current buffer
 	local on_attach = function(_, bufnr)
 		vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorMoved' }, {
 			buffer = bufnr,
@@ -35,50 +91,10 @@ function M.config()
 		nmap('<leader>rn', vim.lsp.buf.rename, 'Rename symbol')
 	end
 
-	-- Mason
-	require('mason').setup {
-		ui = {
-			border = 'rounded',
-			width = 0.75,
-			height = 0.65,
-			icons = {
-				package_pending = '➜',
-			},
-		},
-	}
-
-	-- Capabilities
+	-- Completion capabilities
 	local capabilities = vim.lsp.protocol.make_client_capabilities()
 	capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
-	-- Server list
-	local servers = {
-		clangd = {
-			cmd = { 'clangd', '--header-insertion=never' },
-			args = { '--header-insertion=never' },
-			--clangd_complete_macros = true,
-		},
-		solidity = {},
-		tsserver = {},
-		html = {},
-		cssls = {},
-		jsonls = {},
-	 	lua_ls = {
-			Lua = {
-				workspace = { checkThirdParty = false },
-				telemetry = { enable = false },
-				diagnostics = {
-					globals = { 'vim' },
-				},
-			},
-		},
-	}
-
-	-- Mason LSP config
-	local mason_lspconfig = require('mason-lspconfig')
-	mason_lspconfig.setup {
-		ensure_installed = vim.tbl_keys(servers),
-	}
+	-- capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 	mason_lspconfig.setup_handlers {
 		-- Default handler
