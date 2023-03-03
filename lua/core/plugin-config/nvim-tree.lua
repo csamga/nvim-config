@@ -13,8 +13,11 @@ function M.config()
 		diagnostics = {
 			enable = true,
 		},
+		modified = {
+			enable = true,
+		},
 		renderer = {
-			indent_width = 1,
+			indent_width = 2,
 			indent_markers = {
 				enable = true,
 			},
