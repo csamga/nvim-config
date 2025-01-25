@@ -1,77 +1,77 @@
-local extmark_ns = vim.api.nvim_create_namespace('code-actions-extmark')
-
-local code_action_listener = function()
-   -- opti this
-   vim.api.nvim_set_hl(0, 'Bulb', { default = true, fg = 'NvimLightYellow' })
-
-   local bufnr = vim.api.nvim_get_current_buf()
-   local params = vim.lsp.util.make_range_params()
-   params.context = {
-      diagnostics = vim.diagnostic.get(bufnr, { lnum = vim.fn.line('.') - 1 }),
-      only = {
-         'quickfix',
-         'refactor.extract',
-         'refactor.inline',
-         'source'
-      },
-      triggerKind = 1
-   }
-   local pos = {
-      line = params.range.start.line,
-      col = params.range.start.character
-   }
-
-   pcall(vim.b[bufnr].cancel_code_action_requests)
-
-   vim.b[bufnr].cancel_code_action_requests = vim.lsp.buf_request_all(bufnr, 'textDocument/codeAction', params,
-      function(responses)
-         local has_actions = false
-
-         for _, response in pairs(responses) do
-            if response.result and not vim.tbl_isempty(response.result) then
-               local filtered = vim.tbl_filter(function(action)
-                  return action.kind ~= 'refactor.rewrite'
-               end, response.result)
-               if not vim.tbl_isempty(filtered) then
-                  has_actions = true
-                  break
-               end
-            end
-         end
-
-         if not has_actions then
-            local extmark_id = vim.b[bufnr].extmark_id
-            if extmark_id ~= nil then
-               vim.api.nvim_buf_del_extmark(bufnr, extmark_ns, extmark_id)
-               vim.b[bufnr].extmark_id = nil
-            end
-            return
-         end
-
-         local opts = {
-            id = vim.b[bufnr].extmark_id,
-            virt_text = { { '', 'Bulb' } },
-            hl_mode = 'combine',
-            virt_text_pos = 'eol',
-            strict = false
-         }
-         local first_char = vim.api.nvim_get_current_line():match('%s*'):len()
-         if first_char > 2 then
-            opts.virt_text_win_col = 0
-            -- issue: doesn't take into account tabs
-            -- opts.virt_text_win_col = math.max(first_char - 2, 0)
-            -- opts.virt_text_win_col = math.min(pos.col - 2, opts.virt_text_win_col)
-         end
-         vim.b[bufnr].extmark_id = vim.api.nvim_buf_set_extmark(bufnr, extmark_ns, pos.line, pos.col, opts)
-      end)
-end
-
-vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-   group = vim.api.nvim_create_augroup('code-action-sign', { clear = true }),
-   callback = function()
-      code_action_listener()
-   end
-})
+-- local extmark_ns = vim.api.nvim_create_namespace('code-actions-extmark')
+--
+-- local code_action_listener = function()
+--    -- opti this
+--    vim.api.nvim_set_hl(0, 'Bulb', { default = true, fg = 'NvimLightYellow' })
+--
+--    local bufnr = vim.api.nvim_get_current_buf()
+--    local params = vim.lsp.util.make_range_params()
+--    params.context = {
+--       diagnostics = vim.diagnostic.get(bufnr, { lnum = vim.fn.line('.') - 1 }),
+--       only = {
+--          'quickfix',
+--          'refactor.extract',
+--          'refactor.inline',
+--          'source'
+--       },
+--       triggerKind = 1
+--    }
+--    local pos = {
+--       line = params.range.start.line,
+--       col = params.range.start.character
+--    }
+--
+--    pcall(vim.b[bufnr].cancel_code_action_requests)
+--
+--    vim.b[bufnr].cancel_code_action_requests = vim.lsp.buf_request_all(bufnr, 'textDocument/codeAction', params,
+--       function(responses)
+--          local has_actions = false
+--
+--          for _, response in pairs(responses) do
+--             if response.result and not vim.tbl_isempty(response.result) then
+--                local filtered = vim.tbl_filter(function(action)
+--                   return action.kind ~= 'refactor.rewrite'
+--                end, response.result)
+--                if not vim.tbl_isempty(filtered) then
+--                   has_actions = true
+--                   break
+--                end
+--             end
+--          end
+--
+--          if not has_actions then
+--             local extmark_id = vim.b[bufnr].extmark_id
+--             if extmark_id ~= nil then
+--                vim.api.nvim_buf_del_extmark(bufnr, extmark_ns, extmark_id)
+--                vim.b[bufnr].extmark_id = nil
+--             end
+--             return
+--          end
+--
+--          local opts = {
+--             id = vim.b[bufnr].extmark_id,
+--             virt_text = { { '', 'Bulb' } },
+--             hl_mode = 'combine',
+--             virt_text_pos = 'eol',
+--             strict = false
+--          }
+--          local first_char = vim.api.nvim_get_current_line():match('%s*'):len()
+--          if first_char > 2 then
+--             opts.virt_text_win_col = 0
+--             -- issue: doesn't take into account tabs
+--             -- opts.virt_text_win_col = math.max(first_char - 2, 0)
+--             -- opts.virt_text_win_col = math.min(pos.col - 2, opts.virt_text_win_col)
+--          end
+--          vim.b[bufnr].extmark_id = vim.api.nvim_buf_set_extmark(bufnr, extmark_ns, pos.line, pos.col, opts)
+--       end)
+-- end
+--
+-- vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+--    group = vim.api.nvim_create_augroup('code-action-sign', { clear = true }),
+--    callback = function()
+--       code_action_listener()
+--    end
+-- })
 
 local on_attach = function(client, bufnr)
    require('config.diagnostics').setup_diagnostics(client)
@@ -211,6 +211,10 @@ local spec = {
             capabilities = capabilities,
          })
          lspconfig.html.setup({
+            on_attach = on_attach,
+            capabilities = capabilities,
+         })
+         lspconfig.cssls.setup({
             on_attach = on_attach,
             capabilities = capabilities,
          })
