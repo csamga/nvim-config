@@ -153,12 +153,18 @@ local spec = {
    {
       'williamboman/mason.nvim',
       event = 'VeryLazy',
-      config = true
+   },
+   {
+      'williamboman/mason-lspconfig.nvim',
+      event = 'VeryLazy'
    },
    {
       'neovim/nvim-lspconfig',
       event = 'Filetype',
       config = function()
+         require('mason').setup()
+         require('mason-lspconfig').setup()
+
          local lspconfig = require('lspconfig')
          -- local bin_path = vim.fn.stdpath('data') .. '/mason/bin/'
          local capabilities = require('cmp_nvim_lsp').default_capabilities()
