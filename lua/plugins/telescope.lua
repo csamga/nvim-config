@@ -34,6 +34,7 @@ local options = function()
          },
          ['file_browser'] = {
             hijack_netrw = true,
+            hidden = true,
          },
       },
    }
