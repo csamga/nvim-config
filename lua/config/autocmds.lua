@@ -24,6 +24,7 @@ vim.api.nvim_create_autocmd({ 'CursorMoved' }, {
       vim.g.current_cursor_pos = vim.fn.getcurpos()
    end,
 })
+--
 -- Restore cursor position after yanking
 vim.api.nvim_create_autocmd('TextYankPost', {
    pattern = '*',
@@ -32,16 +33,5 @@ vim.api.nvim_create_autocmd('TextYankPost', {
       if vim.v.event.operator == 'y' then
          vim.fn.setpos('.', vim.g.current_cursor_pos)
       end
-   end,
-})
-
-vim.api.nvim_create_autocmd('TermOpen', {
-   group = vim.api.nvim_create_augroup('terminal', { clear = true }),
-   callback = function()
-      vim.opt.number = false
-      vim.opt.relativenumber = false
-      local buf = vim.api.nvim_win_get_buf(0)
-      vim.notify(vim.inspect(buf))
-      vim.cmd.startinsert()
    end,
 })
