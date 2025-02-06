@@ -6,7 +6,7 @@ local spec = {
    main = 'nvim-treesitter.configs',
    opts = {
       ensure_installed = {
-         'lua', 'c', 'cpp', 'glsl', 'html', 'css', 'javascript'
+         'lua', 'c', 'cpp', 'glsl', 'html', 'css', 'javascript', 'python'
       },
       highlight = {
          enable = true,
