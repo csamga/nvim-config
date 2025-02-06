@@ -1,54 +1,49 @@
-local options = function()
-   -- local dark_hl = { fg = "#e7e0b2" }
-   -- local light_hl = { fg = "#e6dc9d" }
-   -- local hl
-   -- if vim.o.background == "dark" then
-   -- 	hl = dark_hl
-   -- else
-   -- 	hl = light_hl
-   -- end
-   return {
-      attach_navic = true,
-      show_dirname = false,
-      show_modified = true,
-      create_autocmd = false,
-      context_follow_icon_color = true,
-      -- custom_section = function(_, _)
-      -- 	return os.date('%H:%M') .. ' '
-      -- end,
-      -- theme = {
-      -- 	normal = hl
-      -- }
-   }
-end
-
-local config = function(_, opts)
-   require('barbecue').setup(opts)
-
-   vim.api.nvim_create_autocmd({
-      -- "WinScrolled",
-      'BufWinEnter',
-      'CursorHold',
-      'InsertLeave',
-      'BufModifiedSet',
-   }, {
-      group = vim.api.nvim_create_augroup('barbecue.updater', {}),
-      callback = function()
-         require('barbecue.ui').update()
-      end,
-   })
-end
+local options = {
+   -- bar = {
+   --    enable = function(buf, win, _)
+   --       if
+   --           not vim.api.nvim_buf_is_valid(buf)
+   --           or not vim.api.nvim_win_is_valid(win)
+   --           or vim.fn.win_gettype(win) ~= ''
+   --           or vim.wo[win].winbar ~= ''
+   --           or vim.bo[buf].ft == 'help'
+   --       -- or vim.bo[buf].ft == 'man'
+   --       -- or vim.bo[buf].buftype == 'terminal'
+   --       then
+   --          return false
+   --       end
+   --
+   --       local stat = vim.uv.fs_stat(vim.api.nvim_buf_get_name(buf))
+   --       if stat and stat.size > 1024 * 1024 then
+   --          return false
+   --       end
+   --
+   --       return vim.bo[buf].ft == 'markdown'
+   --           or pcall(vim.treesitter.get_parser, buf)
+   --           or not vim.tbl_isempty(vim.lsp.get_clients({
+   --              bufnr = buf,
+   --              method = 'textDocument/documentSymbol',
+   --           }))
+   --    end
+   -- },
+   -- menu = {
+   --    preview = false,
+   --    entry = {
+   --       padding = {
+   --          right = 4
+   --       }
+   --    }
+   -- }
+}
 
 local spec = {
-   'utilyre/barbecue.nvim',
-   version = '*',
-   dependencies = {
-      'SmiteshP/nvim-navic',
-      { 'nvim-tree/nvim-web-devicons', commit = '9154484' },
-   },
-   event = 'LspAttach',
-   opts = options,
-   config = config,
+   'Bekaboo/dropbar.nvim',
+   event = 'VeryLazy',
+   -- opts = options,
+   -- config = function()
+   --    local api = require('dropbar.api')
+   --    vim.keymap.set('n', '<leader>;', api.pick)
+   -- end
 }
 
 return spec
