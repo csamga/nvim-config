@@ -7,7 +7,10 @@ vim.opt.number = true
 vim.opt.numberwidth = 3
 vim.opt.relativenumber = true
 vim.opt.scrolloff = 10
-vim.opt.shell = 'pwsh'
+if (vim.uv.os_uname().sysname == 'Windows_NT') then
+   vim.opt.shell = 'pwsh'
+end
+
 vim.opt.shiftwidth = 4
 vim.opt.sidescrolloff = 10
 vim.opt.smartindent = true
