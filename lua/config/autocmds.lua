@@ -1,3 +1,12 @@
+-- Enable splitbelow for man pages
+vim.api.nvim_create_autocmd('BufWinEnter', {
+   group = vim.api.nvim_create_augroup('ManSplitBelow', { clear = true }),
+   pattern = 'man:/*',
+   callback = function()
+      vim.cmd.wincmd('J')
+   end
+})
+
 local yank_group = vim.api.nvim_create_augroup('highlight_yank', { clear = true })
 -- Highlight yanked line
 vim.api.nvim_create_autocmd({ 'TextYankPost' }, {
