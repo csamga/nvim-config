@@ -156,7 +156,7 @@ local spec = {
    },
    {
       'williamboman/mason-lspconfig.nvim',
-      event = 'VeryLazy'
+      event = 'VeryLazy',
    },
    {
       'neovim/nvim-lspconfig',

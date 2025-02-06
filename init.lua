@@ -1,8 +1,8 @@
 local utils = require('config.utils')
-utils.set_background({ min = 10, max = 16 })
+utils.set_background({ min = 10, max = 17 })
 
 if (vim.loop.os_uname().sysname ~= 'Linux') then
-	vim.cmd.language('en')
+   vim.cmd.language('en')
 end
 
 require('config.lazy')
