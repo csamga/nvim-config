@@ -97,15 +97,16 @@ local cmp_options = function()
          end
       },
       sources = cmp.config.sources({
-			{
-				name = 'lazydev',
-				group_index = 0
-			},
+         {
+            name = 'lazydev',
+            group_index = 0
+         },
          {
             name = 'nvim_lsp',
             max_item_count = 20
          },
          { name = 'nvim_lsp_signature_help' },
+         { name = 'path' },
       }),
       mapping = cmp_mappings(),
       matching = {
