@@ -7,7 +7,7 @@ vim.opt.number = true
 vim.opt.numberwidth = 3
 vim.opt.relativenumber = true
 vim.opt.scrolloff = 10
-vim.opt.clipboard = 'unnamedplus'
+vim.opt.clipboard:append('unnamedplus')
 
 if (vim.uv.os_uname().sysname == 'Windows_NT') then
    vim.opt.shell = 'pwsh'
