@@ -4,6 +4,7 @@ local terminal = require('config.terminal')
 vim.keymap.set('n', '<C-s>', vim.cmd.write)
 vim.keymap.set('n', '<leader>cb', utils.switch_background)
 vim.keymap.set('n', '<leader>x', '<cmd>source %<cr>')
+vim.keymap.set('i', '<C-c>', '<Esc>')
 
 vim.keymap.set('n', '<leader>st', function()
    terminal.term_toggle(16)
