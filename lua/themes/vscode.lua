@@ -60,11 +60,11 @@ local config = function(_, opts)
 
    require('vscode').setup(opts)
 
+   if vim.g.colors_name ~= 'vscode' then return end
+
    vim.api.nvim_create_autocmd('OptionSet', {
       pattern = 'background',
       callback = function()
-         if vim.g.colors_name ~= 'vscode' then return end
-
          local config = require('vscode.config').opts
 
          if vim.o.background == 'dark' then
