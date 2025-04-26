@@ -13,11 +13,7 @@ end
 M.switch_background = function()
    local background = vim.o.background
 
-   if background == 'dark' then
-      vim.o.background = 'light'
-   else
-      vim.o.background = 'dark'
-   end
+   vim.o.background = (background == 'dark') and 'light' or 'dark'
 
    require('config.diagnostics').setup_signs()
 end
