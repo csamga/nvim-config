@@ -9,9 +9,13 @@ M.setup_diagnostics = function(client)
          focusable = false,
          source = 'if_many',
          max_width = 50,
-         header = 'Diagnostics: [' .. client.name .. ']'
+         header = 'Diagnostics: [' .. client.name .. ']',
+         border = 'single'
       },
       severity_sort = true,
+      jump = {
+         float = true
+      }
    })
 end
 
