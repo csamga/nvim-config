@@ -29,6 +29,7 @@ local options = function()
             check_mime_type = true,
          },
          dynamic_preview_title = true,
+         file_ignore_patterns = { '%.o', '^%.git/' }
       }),
       pickers = {
          find_files = {
@@ -45,6 +46,9 @@ local options = function()
          man_pages = {
             sections = { 'ALL' },
          },
+         find_files = {
+            hidden = true,
+         }
       },
       extensions = {
          ['ui-select'] = {
@@ -81,6 +85,9 @@ local config = function(_, opts)
    vim.keymap.set('n', '<leader>ff', builtin.find_files, {
       desc = 'Telescope find files'
    })
+   vim.keymap.set('n', '<leader>cf', function()
+      builtin.find_files({ cwd = vim.fn.stdpath('config') })
+   end, { desc = 'Find files in config directory' })
    vim.keymap.set('n', '<leader>gr', builtin.live_grep, {
       desc = 'Telescope live grep'
    })
