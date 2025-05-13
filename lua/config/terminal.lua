@@ -2,19 +2,11 @@ local M = {}
 
 local term_win = nil
 local term_buf = nil
+local term_id = nil
 
-M.term_toggle = function(height)
+M.term_toggle = function(height, cmd)
    if term_win and vim.api.nvim_win_is_valid(term_win) then
-      local cur_win = vim.api.nvim_get_current_win()
-
-      if cur_win == term_win then
-         -- Hide terminal if focused
-         vim.cmd('hide')
-      else
-         -- Focus terminal if visible and not focused
-         vim.api.nvim_set_current_win(term_win)
-      end
-
+      vim.api.nvim_win_hide(term_win)
       return
    end
 
@@ -31,8 +23,13 @@ M.term_toggle = function(height)
       -- Terminal was't previously openned, create new terminal buffer
       vim.cmd.term()
       term_buf = vim.api.nvim_get_current_buf()
+      term_id = vim.b.terminal_job_id
       vim.wo.number = false
       vim.wo.relativenumber = false
+   end
+
+   if cmd then
+      vim.fn.chansend(term_id, cmd .. '\n')
    end
 
    vim.cmd.startinsert()
