@@ -1,7 +1,8 @@
 local options = {
-   style = function()
-      return vim.o.background
-   end,
+   background = {
+      light = 'jellybeans_light',
+      dark = 'jellybeans'
+   },
    italics = false,
    flat_ui = false,
    ---@diagnostic disable-next-line: unused-local
