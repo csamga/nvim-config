@@ -14,7 +14,7 @@ if (vim.uv.os_uname().sysname == 'Windows_NT') then
 end
 
 vim.opt.shiftwidth = 4
-vim.opt.sidescrolloff = 10
+vim.opt.sidescrolloff = 4
 vim.opt.smartindent = true
 vim.opt.tabstop = 4
 vim.opt.timeoutlen = 250
