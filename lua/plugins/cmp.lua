@@ -47,7 +47,7 @@ local cmp_mappings = function()
       end),
       ['<Tab>'] = cmp.mapping(function(fallback)
          if cmp.visible() then
-            cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+            cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
          elseif luasnip.locally_jumpable(1) then
             luasnip.jump(1)
          else
@@ -56,7 +56,7 @@ local cmp_mappings = function()
       end, { 'i', 's' }),
       ['<S-Tab>'] = cmp.mapping(function(fallback)
          if cmp.visible() then
-            cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
+            cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
          elseif luasnip.locally_jumpable(-1) then
             luasnip.jump(-1)
          else
@@ -103,7 +103,7 @@ local cmp_options = function()
          },
          {
             name = 'nvim_lsp',
-            max_item_count = 20
+            preselect = true,
          },
          { name = 'nvim_lsp_signature_help' },
          { name = 'path' },
@@ -134,18 +134,29 @@ local cmp_options = function()
             side_padding = 1,
          },
       },
-      -- preselect = cmp.PreselectMode.Item,
-      -- confirmation = {
-      -- 	get_commit_characters = function (commit_characters)
-      -- 		return vim.tbl_extend('keep', commit_characters, {'.'})
-      -- 	end
-      -- },
+      preselect = cmp.PreselectMode.Item,
+      completion = {
+         completeopt = 'menuone,popup',
+      },
+      performance = {
+         max_view_entries = 40,
+      },
+      confirmation = {
+         get_commit_characters = function(commit_characters)
+            return vim.tbl_extend('keep', commit_characters, { '.' })
+         end
+      },
+      experimental = {
+         ghost_text = true,
+      }
    }
 end
 
 local cmp_config = function(_, opts)
    local cmp = require('cmp')
+   vim.o.pumheight = 20
    cmp.setup(opts)
+   cmp.setup.filetype('TelescopePrompt', { enabled = false })
 
    local formatting = {
       fields = { 'abbr' },
@@ -159,28 +170,40 @@ local cmp_config = function(_, opts)
    }
 
    cmp.setup.cmdline('/', {
-      mapping = cmp.mapping.preset.cmdline(),
+      mapping = cmp.mapping.preset.cmdline({
+         ['<CR>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+               cmp.confirm({
+                  select = true,
+                  behavior = cmp.ConfirmBehavior.Insert
+               })
+            else
+               fallback()
+            end
+         end),
+      }),
       sources = {
          {
             name = 'buffer',
-            max_item_count = 20
+            -- preselect = true,
          }
       },
-      formatting = formatting
+      formatting = formatting,
+      preselect = cmp.PreselectMode.None,
    })
    cmp.setup.cmdline(':', {
       mapping = cmp.mapping.preset.cmdline(),
       sources = {
          {
             name = 'cmdline',
-            max_item_count = 20
+            preselect = true,
          },
          {
             name = 'path',
-            max_item_count = 20
+            preselect = true,
          }
       },
-      formatting = formatting
+      formatting = formatting,
    })
 
    local cmp_autopairs = require('nvim-autopairs.completion.cmp')
