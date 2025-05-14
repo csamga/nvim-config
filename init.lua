@@ -1,5 +1,5 @@
 local utils = require('config.utils')
-utils.set_background({ min = 10, max = 17 })
+utils.set_background({ min = 9, max = 18 })
 
 if (vim.uv.os_uname().sysname ~= 'Linux') then
    vim.cmd.language('en')
